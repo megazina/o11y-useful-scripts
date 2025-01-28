@@ -201,7 +201,7 @@
           },
           "publishLabelOptions": [
             {
-              "displayName": "inferred.services - Sum(1m)",
+              "displayName": "Requests / min",
               "label": "A",
               "paletteIndex": null,
               "plotType": null,
@@ -238,7 +238,7 @@
         "importOf": "GcZ3-3CCQAA",
         "lastUpdated": 0,
         "lastUpdatedBy": null,
-        "name": "Latency by Endpoint/Operation",
+        "name": "Max Latency by Endpoint/Operation",
         "options": {
           "colorBy": "Dimension",
           "colorScale2": null,
@@ -773,7 +773,7 @@
               "yAxis": 0
             },
             {
-              "displayName": "Error rate per min",
+              "displayName": "Error rate / min",
               "label": "D",
               "paletteIndex": 2,
               "plotType": null,
@@ -805,7 +805,7 @@
         "created": 0,
         "creator": null,
         "customProperties": {},
-        "description": "per minute average",
+        "description": "",
         "id": "Ghy4kSNA4AA",
         "importOf": "GcjIssrCYAA",
         "lastUpdated": 0,
@@ -896,8 +896,8 @@
             "noDataMessage": null
           },
           "onChartLegendOptions": {
-            "dimensionInLegend": null,
-            "showLegend": false
+            "dimensionInLegend": "sf_metric",
+            "showLegend": true
           },
           "programOptions": {
             "disableSampling": false,
@@ -907,9 +907,39 @@
           },
           "publishLabelOptions": [
             {
-              "displayName": "inferred.services - Mean(1m)",
+              "displayName": "Mean",
               "label": "A",
-              "paletteIndex": null,
+              "paletteIndex": 9,
+              "plotType": "AreaChart",
+              "valuePrefix": null,
+              "valueSuffix": null,
+              "valueUnit": "Nanosecond",
+              "yAxis": 0
+            },
+            {
+              "displayName": "P99",
+              "label": "B",
+              "paletteIndex": 5,
+              "plotType": null,
+              "valuePrefix": null,
+              "valueSuffix": null,
+              "valueUnit": "Nanosecond",
+              "yAxis": 0
+            },
+            {
+              "displayName": "P90",
+              "label": "C",
+              "paletteIndex": 2,
+              "plotType": null,
+              "valuePrefix": null,
+              "valueSuffix": null,
+              "valueUnit": "Nanosecond",
+              "yAxis": 0
+            },
+            {
+              "displayName": "P50",
+              "label": "D",
+              "paletteIndex": 14,
               "plotType": null,
               "valuePrefix": null,
               "valueSuffix": null,
@@ -928,7 +958,7 @@
           "unitPrefix": "Metric"
         },
         "packageSpecifications": "",
-        "programText": "A = histogram('inferred.services', filter=filter('sf_service', '*') and filter('sf_environment', '*')).max(by=['sf_environment', 'sf_service']).mean(over='1m').publish(label='A')",
+        "programText": "A = histogram('inferred.services', filter=filter('sf_service', '*') and filter('sf_environment', '*')).mean(by=['sf_environment', 'sf_service']).publish(label='A')\nB = histogram('inferred.services').percentile(pct=99, by=['sf_environment', 'sf_service']).publish(label='B')\nC = histogram('inferred.services').percentile(pct=90, by=['sf_environment', 'sf_service']).publish(label='C')\nD = histogram('inferred.services').percentile(pct=50, by=['sf_environment', 'sf_service']).publish(label='D')",
         "relatedDetectorIds": [],
         "tags": []
       }
@@ -944,7 +974,7 @@
         "importOf": "GconURMCQAA",
         "lastUpdated": 0,
         "lastUpdatedBy": null,
-        "name": "Latency by Endpoint/Operation",
+        "name": "Max Latency by Endpoint/Operation",
         "options": {
           "areaChartOptions": {
             "showDataMarkers": false
@@ -1062,10 +1092,8 @@
           "unitPrefix": "Metric"
         },
         "packageSpecifications": "",
-        "programText": "A = histogram('inferred.services', filter=filter('sf_service', '*') and filter('sf_environment', '*')).max(by=['sf_operation', 'sf_environment', 'sf_service', 'sf_error']).mean(over='1m').publish(label='A')\nB = alerts(detector_id=\"Gco3QzACUAA\").publish(label=\"B\");",
-        "relatedDetectorIds": [
-          "Gco3QzACUAA"
-        ],
+        "programText": "A = histogram('inferred.services', filter=filter('sf_service', '*') and filter('sf_environment', '*')).max(by=['sf_operation', 'sf_environment', 'sf_service', 'sf_error']).mean(over='1m').publish(label='A')",
+        "relatedDetectorIds": [],
         "tags": []
       }
     },
@@ -1075,12 +1103,12 @@
         "created": 0,
         "creator": null,
         "customProperties": {},
-        "description": "last minute average",
+        "description": "last minute maximum latency",
         "id": "Ghy6J0ZA0AE",
         "importOf": "GcjMN48CQAA",
         "lastUpdated": 0,
         "lastUpdatedBy": null,
-        "name": "Latency (all requests)",
+        "name": "Max Latency (all requests)",
         "options": {
           "colorBy": "Dimension",
           "colorScale": null,
@@ -1099,7 +1127,7 @@
           },
           "publishLabelOptions": [
             {
-              "displayName": "inferred.services - Mean(1m)",
+              "displayName": "inferred.services",
               "label": "A",
               "paletteIndex": null,
               "plotType": null,
@@ -1122,7 +1150,7 @@
           "unitPrefix": "Metric"
         },
         "packageSpecifications": "",
-        "programText": "A = histogram('inferred.services', filter=filter('sf_service', '*') and filter('sf_environment', '*')).max(by=['sf_environment', 'sf_service']).mean(over='1m').publish(label='A')",
+        "programText": "A = histogram('inferred.services', filter=filter('sf_service', '*') and filter('sf_environment', '*')).max(by=['sf_environment', 'sf_service']).publish(label='A')",
         "relatedDetectorIds": [],
         "tags": []
       }
@@ -1340,7 +1368,7 @@
       "teams": null
     }
   },
-  "hashCode": 1967193825,
+  "hashCode": 1295828236,
   "id": "Ghy2NcIAwAQ",
   "modelVersion": 1,
   "packageType": "GROUP"
